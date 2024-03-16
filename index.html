@@ -10,6 +10,31 @@
     />
     <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+       Telegram.WebApp.ready();
+       Telegram.WebApp.expand();
+       // Check if Telegram WebApp is available
+        if (window.Telegram.WebApp) {
+          // Request write access
+          Telegram.WebApp.requestWriteAccess(function(granted) {
+            // Check if access was granted
+            if (granted) {
+              // Access was granted
+              console.log("Write access granted.");
+              // You can now send messages on behalf of the user.
+            } else {
+              // Access was not granted
+              console.log("Write access denied.");
+              // Handle the denial, maybe disable certain features.
+            }
+          });
+        } else {
+          // Telegram WebApp is not available
+          console.log("This code is not running in a Telegram WebApp environment.");
+        }
+
+    </script>
   </head>
   <body>
     <div class="wrapper">
