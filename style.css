@@ -1,3 +1,6 @@
+body{
+  margin: 0;
+}
 #app {
   display: flex;
   flex-direction: column;
@@ -9,6 +12,7 @@
   color: #34495e;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   user-select: none;
+  max-width: 100%;
 }
 
 .wheel {
@@ -52,10 +56,10 @@
 
 .button {
   position: absolute;
-  width: 100px;
-  height: 100px;
-  top: calc(50% - 50px);
-  left: calc(50% - 50px);
+  width: 80px;
+  height: 80px;
+  top: calc(50% - 40px);
+  left: calc(50% - 40px);
   border-radius: 50%;
   border: none;
   outline: none;
@@ -72,21 +76,8 @@
 }
 
 .button.is-primary {
-  border-left: 2px solid #c0392b;
-  border-right: 2px solid #c0392b;
-}
-
-.button.is-small {
-  min-width: 80px;
-  padding-bottom: 14px;
-}
-
-.button:hover {
-  background-color: lighten(#e74c3c, 10%);
-}
-
-.button:active {
-  background-color: #e74c3c;
+  border: 2px solid #c0392b;
+  border: 2px solid #c0392b;
 }
 
 .button:disabled {

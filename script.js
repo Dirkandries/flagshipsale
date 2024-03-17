@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         computed: {
             wheel() {
-                const diameter = 400;
+                const diameter = 350;
                 const center = diameter / 2;
                 return {
                     diameter,
