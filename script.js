@@ -73,7 +73,7 @@ spinBtn.addEventListener("click", () => {
         count++;
         resultValue -= 5;
       } else if (count > 15 && Math.abs(myChart.options.rotation - degree) < resultValue) {
-        finalValue.innerHTML = `<p>Value: ${backendValue}</p>`;
+        finalValue.innerHTML = `<p>You won ${myChart.data.labels[backendValue - 1]} $FYI points</p>`;
         // Update the visibility of pyro elements here after stopping the spin
         updatePyroVisibility(backendValue);
         clearInterval(rotationInterval);
