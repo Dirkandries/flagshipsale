@@ -29,6 +29,12 @@
       <button class="button is-primary" :disabled="spinning" @click="spin"><span class="button__title">Spin</span></button>
     </div>
   </div>
+  <div id="winModal" class="modal">
+      <div class="modal-content">
+          <p>You won</p>
+           <p>Closing this application in <span id="countdown">5</span>...</p>
+      </div>
+  </div>
 </div>
 
 <script src="script.js"></script>
