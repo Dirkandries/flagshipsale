@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spin Wheel App</title>
-    <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-       Telegram.WebApp.ready();
-       Telegram.WebApp.expand();
-    </script>
-  </head>
-  <body>
-    <div class="wrapper">
-    <div id="final-value">
-        <p>Click On The Spin Button To Start</p>
-      </div>
-      <div class="container">
-        <canvas id="wheel"></canvas>
-        <button id="spin-btn">Spin</button>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAP4AAAD6CAYAAACBB/pHAAAACXBIWXMAAC4jAAAuIwF4pT92AAAFJGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDIgNzkuZjM1NGVmYywgMjAyMy8xMS8wOS0xMjo0MDoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI1LjYgKDIwMjQwMjE1Lm0uMjUwNCBmOWVkYWQyKSAgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyNC0wMy0xNlQyMTo1MTozMyswMTowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjQtMDMtMTZUMjE6NTM6MDArMDE6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjQtMDMtMTZUMjE6NTM6MDArMDE6MDAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjcwNjA3NmFhLTc3NjAtMjk0Yi1iZjNhLTFhNTQ2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" alt="spinner-arrow" />
-      </div>
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheel Of Fortune</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <div class="wheel">
+    <svg class="wheel__svg" :viewBox="`0 0 ${wheel.diameter} ${wheel.diameter}`" :width="wheel.diameter" :height="wheel.diameter">
+      <g ref="wheel" :transform-origin="`${wheel.cx} ${wheel.cy}`">
+        <g class="sector" v-for="award, index in sectors" :key="index">
+          <path class="sector__figure" :d="describeSector(index)" :fill="getSectorFill(index)" stroke="#c0392b" fill-rule="evenodd"></path>
+          <text class="sector__label" :x="describeLabel(index).x" :y="describeLabel(index).y" :class="isEmoji(award) ? 'is-emoji' : ''" :style="describeLabel(index).style">{{ award }}</text>
+        </g>
+      </g>
+    </svg>
+    <div class="wheel__marker"></div>
+    <div class="buttons">
+      <button class="button is-primary" :disabled="spinning" @click="spin"><span class="button__title">Spin</span></button>
     </div>
-    <div class="pyro">
-    <div class="before"></div>
-    <div class="after"></div>
+  </div>
 </div>
-    <!-- Chart JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <!-- Chart JS Plugin for displaying text over chart -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
-    <!-- Script -->
-    <script src="script.js"></script>
-  </body>
+
+<script src="script.js"></script>
+</body>
 </html>

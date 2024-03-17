@@ -1,88 +1,141 @@
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spin-btn");
-const finalValue = document.getElementById("final-value");
-const pyroBefore = document.querySelector(".pyro > .before");
-const pyroAfter = document.querySelector(".pyro > .after");
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                sectors: [
+                    '💰', '500', '1000', '500', '2000', '500',
+                    '💩', '500', '2000', '500', '1000', '500'
+                ],
+                spinning: false,
+                currentAngle: 0,
+            };
+        },
+        computed: {
+            wheel() {
+                const diameter = 400;
+                const center = diameter / 2;
+                return {
+                    diameter,
+                    radius: center - 2, // space for stroke
+                    cx: center,
+                    cy: center,
+                };
+            },
+            sectorSize() {
+                return 360 / this.sectors.length;
+            },
+        },
+        created() {
+            window.addEventListener('keydown', (event) => {
+                if (this.spinning) return;
 
-// Mapping of values to their respective degrees
-const valueToDegreeMap = {
-  1: 70,
-  2: 360,
-  3: 310,
-  4: 250,
-  5: 190,
-  6: 130,
-};
+                switch (event.code) {
+                    case 'ArrowLeft': this.move(false); break;
+                    case 'ArrowRight': this.move(true); break;
+                    case 'Space': this.spin(); break;
+                }
+            });
+        },
+        mounted() {
+            anime.set(this.$refs.wheel, {
+                rotate: this.currentAngle,
+            });
+        },
+        methods: {
+            polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+                var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+                return {
+                    x: centerX + (radius * Math.cos(angleInRadians)),
+                    y: centerY + (radius * Math.sin(angleInRadians)),
+                };
+            },
+            getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            },
+            describeSector(index) {
+                const { cx, cy, radius } = this.wheel;
+                const startAngle = (index * this.sectorSize) - this.sectorSize / 2;
+                const endAngle = startAngle + this.sectorSize;
+                const start = this.polarToCartesian(cx, cy, radius, endAngle);
+                const end = this.polarToCartesian(cx, cy, radius, startAngle);
+                const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+                return [
+                    "M", start.x, start.y,
+                    "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
+                    "L", cx, cy,
+                    "Z"
+                ].join(" ");
+            },
+            describeLabel(index) {
+                const { cx, cy, radius } = this.wheel;
+                const angle = index * this.sectorSize;
+                const offset = 50; // Offset for label positioning
+                const position = this.polarToCartesian(cx, cy, radius - offset, angle);
+                const style = `transform-origin: ${position.x}px ${position.y}px; transform: rotate(${angle}deg);`;
+                return { ...position, angle, style };
+            },
+            async move(sign) {
+                this.currentAngle += sign ? -this.sectorSize : this.sectorSize;
+                anime({
+                    targets: this.$refs.wheel,
+                    rotate: this.currentAngle,
+                });
+            },
+            async spin () {
+    const { sectors, sectorSize } = this;
 
-const data = [16, 16, 16, 16, 16, 16];
-const pieColors = ["#6A46B0", "#4C3083", "#6A46B0", "#4C3083", "#6A46B0", "#4C3083"];
+    // Use this.getRandomInt to reference the method correctly
+    const awardIndex = this.getRandomInt(0, sectors.length - 1);
+    const awardRandomOffset = this.getRandomInt((sectorSize / 2) * -1, (sectorSize / 2));
+    const awardAngleCenter = awardIndex * sectorSize;
 
-let myChart = new Chart(wheel, {
-  plugins: [ChartDataLabels],
-  type: "pie",
-  data: {
-    labels: [100, 250, 500, 1250, 2500, 10000],
-    datasets: [{ backgroundColor: pieColors, data: data }],
-  },
-  options: {
-    responsive: true,
-    animation: { duration: 0 },
-    plugins: {
-      tooltip: false,
-      legend: { display: false },
-      datalabels: {
-        color: "#ffffff",
-        formatter: (_, context) => context.chart.data.labels[context.dataIndex],
-        font: { size: 24 },
-      },
-    },
-  },
-});
+    const turns = (10 * 360);
+    const targetAngleUnvalidated = turns + awardAngleCenter;
 
-// Placeholder for backend input
-let backendValue = 6; // This should be set based on backend input
+    const targetAngle = Math.abs(awardAngleCenter) > Math.abs(this.currentAngle)
+        ? targetAngleUnvalidated
+        : targetAngleUnvalidated + 360;
+    const targetAngleOffset = targetAngle + awardRandomOffset;
 
-function getDegreeByValue(value) {
-  return valueToDegreeMap[value];
-}
+    this.spinning = true;
 
-function updatePyroVisibility(value) {
-  if (value === 6) {
-    pyroBefore.style.display = "block";
-    pyroAfter.style.display = "block";
-  } else {
-    pyroBefore.style.display = "none";
-    pyroAfter.style.display = "none";
-  }
-}
+    await anime({
+        targets: this.$refs.wheel,
+        duration: 10000,
+        rotate: -targetAngleOffset,
+        easing: 'easeOutCirc'
+    }).finished;
 
-spinBtn.addEventListener("click", () => {
-  if (backendValue >= 1 && backendValue <= 6) {
-    spinBtn.disabled = true;
-    finalValue.innerHTML = `<p>Good Luck!</p>`;
-    let degree = getDegreeByValue(backendValue);
-    console.log(`Value: ${backendValue}, Degree: ${degree}`);
+    await anime({
+        targets: this.$refs.wheel,
+        delay: 250,
+        rotate: -targetAngle
+    }).finished;
 
-    let count = 0;
-    let resultValue = 101;
-    let rotationInterval = window.setInterval(() => {
-      myChart.options.rotation += resultValue;
-      myChart.update();
-      if (myChart.options.rotation >= 360) {
-        myChart.options.rotation -= 360;
-        count++;
-        resultValue -= 5;
-      } else if (count > 15 && Math.abs(myChart.options.rotation - degree) < resultValue) {
-        finalValue.innerHTML = `<p>You won ${myChart.data.labels[backendValue - 1]} $FYI points</p>`;
-        // Update the visibility of pyro elements here after stopping the spin
-        updatePyroVisibility(backendValue);
-        clearInterval(rotationInterval);
-        spinBtn.disabled = false;
-        count = 0;
-        resultValue = 101;
-      }
-    }, 10);
-  } else {
-    console.error("Invalid backend value. Please ensure it is between 1 and 6.");
-  }
+    // Trimming angle for future animations
+    this.currentAngle = -targetAngle % 360;
+
+    anime.set(this.$refs.wheel, {
+        rotate: this.currentAngle
+    });
+
+    this.spinning = false;
+},
+
+            isEmoji(value) {
+                const emojiPattern = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
+                return emojiPattern.test(value);
+            },
+            getSectorFill(index) {
+                if (this.sectors.length % 2 === 0) {
+                    return index % 2 === 0 ? '#e74c3c' : '#c0392b';
+                } else {
+                    return '#e74c3c';
+                }
+            },
+        },
+    });
 });
