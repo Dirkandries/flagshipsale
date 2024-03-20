@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ],
                 spinning: false,
                 currentAngle: 0,
-                showModal: false,
                 winningSector: '',
+                targetSectorIndex: 6, // Set to the index of the desired ending sector
             };
         },
         computed: {
@@ -51,20 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     x: centerX + (radius * Math.cos(angleInRadians)),
                     y: centerY + (radius * Math.sin(angleInRadians)),
                 };
-            },
-            showWinningPointsPopup(winningPoints) {
-                Telegram.WebApp.Popup.show({
-                    title: "Congratulations!",
-                    message: `You won ${winningPoints} points!`,
-                    buttons: [
-                        {
-                            type: "close", // Adjust based on Telegram API
-                            text: "Close Application",
-                            // Ensure onClick is the correct way to handle button clicks as per Telegram API
-                            onClick: () => Telegram.WebApp.close()
-                        }
-                    ]
-                });
             },
             getCurrentSector() {
                 const normalizedAngle = (this.currentAngle % 360 + 360) % 360;
@@ -107,47 +93,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             },
             async spin() {
-            const { sectors, sectorSize } = this;
+                const { sectorSize } = this;
+                const awardIndex = this.targetSectorIndex; // Use the targeted index
+                const awardAngleCenter = awardIndex * sectorSize;
+                const turns = 10 * 360;
+                const targetAngle = turns + awardAngleCenter;
 
-            // Use this.getRandomInt to reference the method correctly
-            const awardIndex = this.getRandomInt(0, sectors.length - 1);
-            const awardRandomOffset = this.getRandomInt((sectorSize / 2) * -1, (sectorSize / 2));
-            const awardAngleCenter = awardIndex * sectorSize;
+                this.spinning = true;
 
-            const turns = (10 * 360);
-            const targetAngleUnvalidated = turns + awardAngleCenter;
+                await anime({
+                    targets: this.$refs.wheel,
+                    duration: 10000,
+                    rotate: -targetAngle,
+                    easing: 'easeOutCirc'
+                }).finished;
 
-            const targetAngle = Math.abs(awardAngleCenter) > Math.abs(this.currentAngle)
-                ? targetAngleUnvalidated
-                : targetAngleUnvalidated + 360;
-            const targetAngleOffset = targetAngle + awardRandomOffset;
+                this.currentAngle = -targetAngle % 360;
 
-            this.spinning = true;
+                anime.set(this.$refs.wheel, {
+                    rotate: this.currentAngle,
+                });
 
-            await anime({
-                targets: this.$refs.wheel,
-                duration: 10000,
-                rotate: -targetAngleOffset,
-                easing: 'easeOutCirc'
-            }).finished;
+                this.spinning = false;
 
-            await anime({
-                targets: this.$refs.wheel,
-                delay: 250,
-                rotate: -targetAngle
-            }).finished;
-
-            // Trimming angle for future animations
-            this.currentAngle = -targetAngle % 360;
-
-            anime.set(this.$refs.wheel, {
-                rotate: this.currentAngle
-            });
-
-            this.spinning = false;
-
-            this.winningSector = this.getCurrentSector();
-            this.showWinningPointsPopup(this.winningSector);
+                this.winningSector = this.getCurrentSector();
+                console.log(this.winningSector);
           },
             isEmoji(value) {
                 const emojiPattern = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
@@ -155,9 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             getSectorFill(index) {
                 if (this.sectors.length % 2 === 0) {
-                    return index % 2 === 0 ? '#e74c3c' : '#c0392b';
+                    return index % 2 === 0 ? '#99c62e' : '#8CB62B';
                 } else {
-                    return '#e74c3c';
+                    return '#8CB62B';
                 }
             },
         },

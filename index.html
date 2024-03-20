@@ -15,11 +15,12 @@
 </head>
 <body>
 <div id="app">
+      <h1>Jackpot: </br> 10.000 points</h1>
   <div class="wheel">
     <svg class="wheel__svg" :viewBox="`0 0 ${wheel.diameter} ${wheel.diameter}`" :width="wheel.diameter" :height="wheel.diameter">
       <g ref="wheel" :transform-origin="`${wheel.cx} ${wheel.cy}`">
         <g class="sector" v-for="award, index in sectors" :key="index">
-          <path class="sector__figure" :d="describeSector(index)" :fill="getSectorFill(index)" stroke="#c0392b" fill-rule="evenodd"></path>
+          <path class="sector__figure" :d="describeSector(index)" :fill="getSectorFill(index)" stroke="#7FA527" fill-rule="evenodd"></path>
           <text class="sector__label" :x="describeLabel(index).x" :y="describeLabel(index).y" :class="isEmoji(award) ? 'is-emoji' : ''" :style="describeLabel(index).style">{{ award }}</text>
         </g>
       </g>
@@ -31,6 +32,18 @@
   </div>
 </div>
 
+<div class="mask-modal active" role="dialog"></div>
+<div class="modal modal-active" role="alert">
+  <div class="headertext">
+    <h2>You won $FYI 500 points</h2>
+  </div>
+  <button id="claimButton">Claim</button>
+</div>
 <script src="script.js"></script>
+<script>
+document.getElementById('claimButton').addEventListener('click', function() {
+  Telegram.WebApp.close();
+});
+</script>
 </body>
 </html>
