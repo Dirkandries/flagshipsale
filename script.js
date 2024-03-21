@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
               if (this.winningSector === '💩') {
                   headerText = "Better luck next time!";
               } else if (this.winningSector === '💰') {
-                  headerText = "You won the JACKPOT!";
+                  headerText = "";
               } else {
                   // Set the header text to the sector value if it's not a special symbol
                   headerText = `You won $FYI ${this.winningSector} points`;
