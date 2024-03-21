@@ -86,9 +86,6 @@ body{
   pointer-events: none;
   display: none;
 }
-@import url('https://fonts.googleapis.com/css?family=Pacifico');
-
-
 @-webkit-keyframes blinkH1 {
     0%   {
         color: #fff;
