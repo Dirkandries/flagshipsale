@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 spinning: false,
                 currentAngle: 0,
                 winningSector: '',
-                targetSectorIndex: 0, // Set to the index of the desired ending sector
+                targetSectorIndex: 3, // Set to the index of the desired ending sector
             };
         },
         computed: {
@@ -118,17 +118,26 @@ document.addEventListener('DOMContentLoaded', function () {
               this.winningSector = this.getCurrentSector();
               console.log(this.winningSector);
 
-              // Directly update the header text based on the winning sector
               let headerText;
+              let pointsText = '';
+
               if (this.winningSector === '💩') {
-                  headerText = "Better luck next time!";
+                headerText = "Better luck next time!";
+                document.querySelector('.headertext p').style.display = 'none';
               } else if (this.winningSector === '💰') {
-                  headerText = "";
+                headerText = "You hit the jackpot!";
+                pointsText = "You won 10.000 points";
               } else {
-                  // Set the header text to the sector value if it's not a special symbol
-                  headerText = `You won $FYI ${this.winningSector} points`;
+                headerText = "You won!";
+                pointsText = `${this.winningSector} points`;
               }
+
+              // Update the text content of h2 and p based on the winning sector
               document.querySelector('.headertext h2').textContent = headerText;
+              if(pointsText) {
+                document.querySelector('.headertext p').style.display = ''; // Show p if it has content
+                document.querySelector('.headertext p').textContent = pointsText;
+              }
 
               // Add classes to .mask-modal and .modal after the spin is done
               document.querySelector('.mask-modal').classList.add('active');

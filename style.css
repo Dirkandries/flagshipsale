@@ -260,61 +260,37 @@ h1{
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 290px;
-  height: 100px;
+  width: 338px;
+  height: 320px;
   margin-left: -169px;
-  margin-top: 10px;
-  background: #bdc3c7;
+  margin-top: -65px;
+  background: rgba(27, 13, 70, 0.95);
   z-index: 100;
   visibility: hidden;
   opacity: 0;
   transition: 0.5s ease-out;
   border-radius: 15px;
-  padding: 24px;
   text-align: center;
+  color: #FFF;
+  text-align: center;
+  font-family: Urbanist;
+  font-size: 1.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2.88063rem; /* 153.632% */
 }
-.modal.jackpot{
-  background-image: url("jackpot.png");
-  background-size: cover;
+.modal h2{
+  max-width: 80%;
+  margin: 30px auto;
+}
+.modalheader{
+  width: 100%;
+  height: 80px;
+  border-radius: 1rem;
+  background-image: url(BackgroundImage.png);
 }
 .modal .headertext{
   width: 100%;
-}
-.button-9 {
-  appearance: button;
-  backface-visibility: hidden;
-  background-color: #405cf5;
-  border-radius: 6px;
-  border-width: 0;
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
-  font-size: 100%;
-  height: 44px;
-  line-height: 1.15;
-  margin: 12px 0 0;
-  outline: none;
-  overflow: hidden;
-  padding: 0 25px;
-  position: relative;
-  text-align: center;
-  text-transform: none;
-  transform: translateZ(0);
-  transition: all .2s,box-shadow .08s ease-in;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 100%;
-}
-
-.button-9:disabled {
-  cursor: default;
-}
-
-.button-9:focus {
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
 }
 .active {
   visibility: visible;
