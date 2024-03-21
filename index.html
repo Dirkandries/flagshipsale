@@ -14,6 +14,12 @@
    <script>
       Telegram.WebApp.ready();
       Telegram.WebApp.expand();
+      Telegram.WebApp.MainButton.setParams({
+        color: '#BFF739',
+        text: 'Claim',
+        text_color: '#000000'
+      });
+      Telegram.WebApp.MainButton.hide();
    </script>
 </head>
 <body>
@@ -36,17 +42,12 @@
 </div>
 
 <div class="mask-modal" role="dialog"></div>
-<div class="modal" role="alert">
+<div class="modal jackpot" role="alert">
   <div class="headertext">
     <h2>You won $FYI 500 points</h2>
   </div>
-  <button id="claimButton">Claim</button>
+
 </div>
 <script src="script.js"></script>
-<script>
-document.getElementById('claimButton').addEventListener('click', function() {
-  Telegram.WebApp.close();
-});
-</script>
 </body>
 </html>
