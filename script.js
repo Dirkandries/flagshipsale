@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         data() {
             return {
                 sectors: [
-                    '💰', '500', '1000', '500', '2000', '500',
+                    '💰', '500', '1000','500', '1000', '500', '2000', '500',
                     '💩', '500', '2000', '500', '1000', '500'
                 ],
                 spinning: false,
