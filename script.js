@@ -130,6 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     headerText = "You won!";
                     pointsText = `${this.winningSector} points`;
+                    let pointsValue = this.winningSector;
+                    if (typeof pointsValue === 'number') {
+                        pointsValue = pointsValue.toString();
+                    }
+                    const data = JSON.stringify({ points: pointsValue });
+                    Telegram.WebApp.sendData(data);
                 }
 
                 // Update the text content of h2 and p based on the winning sector
