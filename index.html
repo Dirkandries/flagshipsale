@@ -16,26 +16,7 @@
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
-    // Collect debug info
-    const initData = Telegram.WebApp.initData || '';
-    const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
-    const user = initDataUnsafe.user || {};
 
-    const debugInfo = {
-      initData,
-      user: {
-        id: user.id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        username: user.username,
-        language_code: user.language_code,
-      },
-    };
-
-    // Send debug back to TG
-    //Telegram.WebApp.sendData(JSON.stringify({
-    //  debugInfo: JSON.stringify(debugInfo),
-    //}));
 
     Telegram.WebApp.MainButton.setParams({
       color: '#BFF739',

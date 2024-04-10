@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 Telegram.WebApp.MainButton.show().onClick(function () {
                     const data = JSON.stringify({ points: this.winningSector });
-                    Telegram.WebApp.sendData(points_data);
+                    Telegram.WebApp.sendData(data);
                     Telegram.WebApp.close();
                 });
             },
