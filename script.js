@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Send the winning sector points to Telegram
                 //Telegram.WebApp.sendData(JSON.stringify({ points: this.winningSector }));
 
-                Telegram.WebApp.MainButton.setText('Choose Color').show().onClick(function () {
+                Telegram.WebApp.MainButton.setText('CLAIM').show().onClick(function () {
                     const data = JSON.stringify({points: "500"});
                     Telegram.WebApp.sendData(data);
                     Telegram.WebApp.close();
