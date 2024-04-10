@@ -132,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     pointsText = `${this.winningSector} points`;
                     pointsValueRaw = `${this.winningSector}`;
                     pointsValue = pointsValueRaw.toString();
-                    }
                     const data = JSON.stringify({ points: pointsValue });
                     Telegram.WebApp.sendData(data);
                 }
