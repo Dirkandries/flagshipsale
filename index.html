@@ -12,10 +12,20 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   <script>
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+      Telegram.WebApp.MainButton.setParams({
+        color: '#BFF739',
+        text: 'Claim',
+        text_color: '#000000'
+      });
+      Telegram.WebApp.MainButton.hide();
+   </script>
 </head>
 <body>
 <div id="app">
-  <h1>Jackpot: </br> 10.000 points</h1>
+      <h1>Jackpot: </br> 10.000 points</h1>
   <div class="wheel">
     <svg class="wheel__svg" :viewBox="`0 0 ${wheel.diameter} ${wheel.diameter}`" :width="wheel.diameter" :height="wheel.diameter">
       <g ref="wheel" :transform-origin="`${wheel.cx} ${wheel.cy}`">
@@ -37,6 +47,10 @@
   <div class="headertext">
     <div class="modalheader"></div>
     <h2></h2>
-    <p></p>
+     <p></p>
   </div>
+
 </div>
+<script src="script.js"></script>
+</body>
+</html>
