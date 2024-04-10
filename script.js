@@ -142,11 +142,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Add classes to .mask-modal and .modal after the spin is done
                 document.querySelector('.mask-modal').classList.add('active');
                 document.querySelector('.modal').classList.add('modal-active');
-                Telegram.WebApp.MainButton.show();
+                //Telegram.WebApp.MainButton.show();
                 // Send the winning sector points to Telegram
-                Telegram.WebApp.sendData(JSON.stringify({ points: this.winningSector }));
+                //Telegram.WebApp.sendData(JSON.stringify({ points: this.winningSector }));
 
-                Telegram.WebApp.MainButton.onClick(() => {
+                Telegram.WebApp.MainButton.show().onClick(function () {
+                    const points_data = JSON.stringify({ points: this.winningSector });
+                    Telegram.WebApp.sendData(points_data);
                     Telegram.WebApp.close();
                 });
             },
