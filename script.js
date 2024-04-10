@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+  Telegram.WebApp.ready();
+  Telegram.WebApp.expand();
+
     new Vue({
         el: '#app',
         data() {
@@ -143,6 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
               document.querySelector('.mask-modal').classList.add('active');
               document.querySelector('.modal').classList.add('modal-active');
               Telegram.WebApp.MainButton.show();
+	      // Send the winning sector points to Telegram
+              Telegram.WebApp.sendData(JSON.stringify({ points: this.winningSector }));
 
                Telegram.WebApp.MainButton.onClick(() => {
                    Telegram.WebApp.close();
