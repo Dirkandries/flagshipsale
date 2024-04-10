@@ -127,9 +127,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (this.winningSector === '💰') {
                     headerText = "You hit the jackpot!";
                     pointsText = "You won 10.000 points";
+                    const data = JSON.stringify({ points: 10000 });
+                    Telegram.WebApp.sendData(data);
                 } else {
                     headerText = "You won!";
                     pointsText = `${this.winningSector} points`;
+                    const data = JSON.stringify({ points: ${this.winningSector} });
+                    Telegram.WebApp.sendData(data);
                 }
 
                 // Update the text content of h2 and p based on the winning sector
@@ -147,8 +151,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 //Telegram.WebApp.sendData(JSON.stringify({ points: this.winningSector }));
 
                 Telegram.WebApp.MainButton.show().onClick(function () {
-                    const data = JSON.stringify({ points: this.winningSector });
-                    Telegram.WebApp.sendData(data);
+                //    const data = JSON.stringify({ points: ${this.winningSector} });
+                //    Telegram.WebApp.sendData(data);
                     Telegram.WebApp.close();
                 });
             },
