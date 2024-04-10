@@ -16,7 +16,7 @@
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
-    // Print debug info
+    // Collect debug info
     const initData = Telegram.WebApp.initData || '';
     const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
     const user = initDataUnsafe.user || {};
@@ -30,10 +30,9 @@
         username: user.username,
         language_code: user.language_code,
       },
-      // Add more debug info as needed
     };
 
-    // Send debug info to the user
+    // Send debug back to TG
     Telegram.WebApp.sendData(JSON.stringify({
       debugInfo: JSON.stringify(debugInfo),
     }));
