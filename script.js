@@ -2,17 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Vue({
         el: '#app',
         data() {
-            let webAppData = {};
-            let points = null;
-            let sector = null;
-
-            try {
-                webAppData = JSON.parse(Telegram.WebApp.initData || '{}');
-                points = webAppData.points;
-                sector = webAppData.sector;
-            } catch (error) {
-                console.error('Error parsing WebAppData:', error);
-            }
+            const urlParams = new URLSearchParams(window.location.search);
+            const points = urlParams.get('points');
+            const sector = urlParams.get('sector');
 
             let targetSectorIndex = 3;
             if (sector === 'jackpot') {
