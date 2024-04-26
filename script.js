@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
         el: '#app',
         data() {
             const urlParams = new URLSearchParams(window.location.search);
-            const points = urlParams.get('points');
             const sector = urlParams.get('sector');
 
             let targetSectorIndex = 3;
