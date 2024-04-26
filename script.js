@@ -2,15 +2,41 @@ document.addEventListener('DOMContentLoaded', function () {
     new Vue({
         el: '#app',
         data() {
+            let webAppData = {};
+            let points = null;
+            let sector = null;
+
+            try {
+                webAppData = JSON.parse(Telegram.WebApp.initData || '{}');
+                points = webAppData.points;
+                sector = webAppData.sector;
+            } catch (error) {
+                console.error('Error parsing WebAppData:', error);
+            }
+
+            let targetSectorIndex = 3;
+            if (sector === 'jackpot') {
+                targetSectorIndex = this.sectors.indexOf('💰');
+            } else if (sector === 'poop') {
+                targetSectorIndex = this.sectors.indexOf('💩');
+            } else if (sector) {
+                const sectorIndex = this.sectors.indexOf(sector);
+                if (sectorIndex !== -1) {
+                    targetSectorIndex = sectorIndex;
+                } else {
+                    console.warn('Invalid sector value:', sector);
+                }
+            }
+
             return {
                 sectors: [
-                    '💰', '250', '1000','500', '2000','500', '1000', '750',
-                    '💩', '750','1000', '500', '2000', '500', '1000', '250'
+                    '💰', '250', '1000', '500', '2000', '500', '1000', '750',
+                    '💩', '750', '1000', '500', '2000', '500', '1000', '250'
                 ],
                 spinning: false,
                 currentAngle: 0,
                 winningSector: '',
-                targetSectorIndex: 3, // Set to the index of the desired ending sector
+                targetSectorIndex,
             };
         },
         computed: {
@@ -19,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const center = diameter / 2;
                 return {
                     diameter,
-                    radius: center - 2, // space for stroke
+                    radius: center - 2,
                     cx: center,
                     cy: center,
                 };
@@ -33,9 +59,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (this.spinning) return;
 
                 switch (event.code) {
-                    case 'ArrowLeft': this.move(false); break;
-                    case 'ArrowRight': this.move(true); break;
-                    case 'Space': this.spin(); break;
+                    case 'ArrowLeft':
+                        this.move(false);
+                        break;
+                    case 'ArrowRight':
+                        this.move(true);
+                        break;
+                    case 'Space':
+                        this.spin();
+                        break;
                 }
             });
         },
@@ -80,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
             describeLabel(index) {
                 const { cx, cy, radius } = this.wheel;
                 const angle = index * this.sectorSize;
-                const offset = 50; // Offset for label positioning
+                const offset = 50;
                 const position = this.polarToCartesian(cx, cy, radius - offset, angle);
                 const style = `transform-origin: ${position.x}px ${position.y}px; transform: rotate(${angle}deg);`;
                 return { ...position, angle, style };
@@ -132,22 +164,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     pointsText = `${this.winningSector} points`;
                 }
 
-                // Update the text content of h2 and p based on the winning sector
                 document.querySelector('.headertext h2').textContent = headerText;
-                if(pointsText) {
-                    document.querySelector('.headertext p').style.display = ''; // Show p if it has content
+                if (pointsText) {
+                    document.querySelector('.headertext p').style.display = '';
                     document.querySelector('.headertext p').textContent = pointsText;
                 }
 
-                // Add classes to .mask-modal and .modal after the spin is done
                 document.querySelector('.mask-modal').classList.add('active');
                 document.querySelector('.modal').classList.add('modal-active');
                 Telegram.WebApp.MainButton.show();
-                // Send the winning sector points to Telegram
-                //Telegram.WebApp.sendData(JSON.stringify({ points: this.winningSector }));
 
                 Telegram.WebApp.MainButton.setText('CLAIM').show().onClick(function () {
-                    const data = JSON.stringify({points: "500"});
+                    const data = JSON.stringify({ points: this.winningSector });
                     Telegram.WebApp.sendData(data);
                     Telegram.WebApp.close();
                 });
