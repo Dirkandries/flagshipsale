@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
         el: '#app',
         data() {
             const urlParams = new URLSearchParams(window.location.search);
-            const sector = urlParams.get('sector');
+            //const sector = urlParams.get('sector');
 
             let targetSectorIndex = 3;
             if (sector === 'jackpot') {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (sector === 'poop') {
                 targetSectorIndex = this.sectors.indexOf('💩');
             } else if (sector) {
-                const sectorIndex = this.sectors.findIndex(s => s === sector);
+                const sectorIndex = this.sectors.indexOf(sector);
                 if (sectorIndex !== -1) {
                     targetSectorIndex = sectorIndex;
                 } else {
