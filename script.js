@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (sector === 'poop') {
                 targetSectorIndex = this.sectors.indexOf('💩');
             } else if (sector) {
-                const sectorIndex = this.sectors.indexOf(sector);
+                const sectorIndex = this.sectors.findIndex(s => s === sector);
                 if (sectorIndex !== -1) {
                     targetSectorIndex = sectorIndex;
                 } else {
