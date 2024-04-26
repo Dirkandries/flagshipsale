@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     new Vue({
         el: '#app',
         data() {
-            //const urlParams = new URLSearchParams(window.location.search);
-            //const sector = urlParams.get('sector');
+            const urlParams = new URLSearchParams(window.location.search);
+            const sector = urlParams.get('sector');
 
             let targetSectorIndex = 3;
             if (sector === 'jackpot') {
