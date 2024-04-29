@@ -159,14 +159,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.querySelector('.headertext p').style.display = '';
                     document.querySelector('.headertext p').textContent = pointsText;
                 }
+                //sendin data to telegram
+                const data = JSON.stringify({ points: this.winningSector });
+                Telegram.WebApp.sendData(data);
 
                 document.querySelector('.mask-modal').classList.add('active');
                 document.querySelector('.modal').classList.add('modal-active');
                 Telegram.WebApp.MainButton.show();
 
-                Telegram.WebApp.MainButton.setText('CLAIM').show().onClick(function () {
-                    const data = JSON.stringify({ points: this.winningSector });
-                    Telegram.WebApp.sendData(data);
+                Telegram.WebApp.MainButton.setText('Claim').show().onClick(function () {
                     Telegram.WebApp.close();
                 });
             },
@@ -183,4 +184,4 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         },
     });
-}); 
+});
